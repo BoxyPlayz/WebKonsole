@@ -60,6 +60,42 @@ class Konsole {
                     alias: ["version", "ver"],
                     description: "displays version information",
                     run: async () => "{version}"
+                },
+                {
+                    alias: ["popup"],
+                    descriptions: "opens popup window",
+                    run: async function () {
+                        const windowFeatures = "left=100,top=100,width=400,height=100,toolbar=false,location=false,menubar=false";
+                        const handle = window.open(
+                            "about:blank",
+                            "Error",
+                            windowFeatures,
+                        );
+                        if (handle) {
+                            handle.document.body.innerHTML = `
+                            <form>
+                                Error: "You are Cooked"
+                                <input type="submit" onclick="window.close()" value="Close">
+                            </form>`
+                            handle.document.body.style.background = "#333344"
+                            handle.document.body.style.color = "#DDDDEE"
+                            Object.assign(handle.document.querySelector("form").style, {
+                                textAlign: "center",
+                                display: "flex",
+                                flexWrap: "wrap",
+                                flexDirection: "column",
+                                alignContent: "center",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                fontFamily: "sans-serif",
+                                height: "100%",
+                                marginBottom: 0
+                            })
+                            return
+                        } else {
+                            return "Popup Blocked"
+                        }
+                    }
                 }
             ]
         }, options);
