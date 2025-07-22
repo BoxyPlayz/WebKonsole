@@ -1,5 +1,9 @@
 import Command from "./Command.js";
 import baseCommands from "./BaseCommands.js";
+import Update from "./Konsole/Update.js";
+import replaceVars from "./Konsole/ReplaceVars.js";
+import RunCommand from "./Konsole/RunCommand.js";
+import Register from "./Konsole/Register.js";
 
 interface Options {
     width?: string;
@@ -37,7 +41,16 @@ export default class Konsole {
     public branch: string = "stable";
     public works = true;
 
-    constructor(Container: HTMLElement, options = {prefix: "$ "}) {
+    public update: () => void;
+    public replaceVars: (text: string) => Promise<string>;
+    public runCommand: (text: string) => Promise<void>;
+    public register: (command: Command) => Promise<void>;
+
+    constructor(Container: HTMLElement, options = { prefix: "$ " }) {
+        this.replaceVars = replaceVars.bind(this);
+        this.update = Update.bind(this);
+        this.runCommand = RunCommand.bind(this);
+        this.register = Register.bind(this);
         this.container = Container as HTMLElement;
         this.options = Object.assign({
             width: "100%",
@@ -55,7 +68,7 @@ export default class Konsole {
             },
 
         }, options
-    );
+        );
         console.log(ascii);
 
         this.buffer = [];
@@ -136,75 +149,5 @@ export default class Konsole {
         });
 
         this.runCommand(this.options.initCommand || "");
-    }
-
-    update() {
-        Object.assign(this.container.style, {
-            backgroundColor: this.options.backgroundColor,
-            color: this.options.textColor,
-            fontFamily: this.options.font,
-            width: this.options.width,
-            height: this.options.height,
-            whiteSpace: "pre-wrap",
-        });
-
-        const output = this.buffer.join("\n");
-        const cursor = this.cursorVisible ? "|" : " ";
-        this.container.innerText = output + cursor;
-    }
-
-    async replaceVars(text = "") {
-        let prev;
-        do {
-            prev = text;
-            for (const [key, value] of Object.entries(this.options.variables)) {
-                text = text.replaceAll(`{${key}}`, value);
-            }
-        } while (text !== prev);
-
-        text = text.replaceAll("\\n", "\n");
-        return text;
-    }
-
-    async runCommand(text: string) {
-        this.buffer.push("");
-
-        for (var line of text.split(";")) {
-            if (!line.trim()) continue;
-
-            line = line.trim()
-
-            const replaced = await this.replaceVars(line);
-            const args = replaced.split(" ");
-            const alias = args.shift();
-
-            let matched = false;
-            for (const cmd of this.commands) {
-                if (cmd.alias.includes(alias || "")) {
-                    const result = await cmd.run.call(this, alias, args);
-                    if (result) {
-                        this.buffer[this.buffer.length - 1] = await this.replaceVars(result);
-                        this.buffer.push("");
-                    }
-                    matched = true;
-                    break;
-                }
-            }
-
-            if (!matched) {
-                this.buffer[this.buffer.length - 1] = `Unknown command: ${alias}`;
-                this.buffer.push("");
-            }
-        }
-
-        this.buffer[this.buffer.length - 1] = this.options.prefix;
-        this.update();
-    }
-
-    async register(command: Command) {
-        if (this.commands.some(cmd => cmd.alias.some(alias => command.alias.includes(alias)))) {
-            throw new Error("Command alias already exists");
-        }
-        this.commands.push(command);
     }
 }

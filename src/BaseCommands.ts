@@ -22,7 +22,7 @@ let baseCommands: Command[] = [
         "Clears the terminal", async function () {
             this.buffer = [this.options.prefix!];
         }),
-    command(["help"], "Displays all commands", async function () {
+    command(["help", "?"], "Displays all commands", async function () {
         let output = `help for Konsole {version}\n  commands:\n`;
         for (const cmd of this.commands) {
             output += `   ${cmd.alias.join(" or ")} : ${cmd.description || ''}\n`;
@@ -49,6 +49,9 @@ Developers: NicholacsC, BoxyPlayz`
         }
         alert(args.join(" "));
         return;
+    }),
+    command(["imwithyouinthedark"], "error.", async function () {
+        return "Don't forget. I'm with you in the dark.";
     })
 ];
 
