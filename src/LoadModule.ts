@@ -12,7 +12,7 @@ export default class LoadModule extends Command {
                 const url = args[0];
                 try {
                     const module = import(url || "https://example.com");
-                    const commandClass = eval((await module).default);
+                    const commandClass = (0, eval)((await module).default);
                     if (!commandClass) {
                         return "Error: Loaded module is not a valid Command class.";
                     }

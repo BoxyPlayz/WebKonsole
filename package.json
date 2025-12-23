@@ -1,9 +1,11 @@
 {
-    "devDependencies": {
-        "typescript": "^5.8.3"
-    },
-    "scripts": {
-        "build": "tsc --project tsconfig.json",
-        "watch": "tsc --project tsconfig.json --watch"
-    }
+  "source": "src/Konsole.ts",
+  "main": "dist/konsole.js",
+  "devDependencies": {
+    "rolldown": "^1.0.0-beta.56",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "rolldown src/Konsole.js --file build/konsole.js"
+  }
 }
