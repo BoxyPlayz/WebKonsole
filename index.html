@@ -1,11 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>WebKonsole</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <div id="konsole"></div>
-        <script type="module" src="./build/frontend.js"></script>
-    </body>
+	<head>
+		<title>WebKonsole</title>
+		<link
+			rel="stylesheet"
+			href="styles.css" />
+	</head>
+	<body>
+		<div id="konsole"></div>
+		<script type="module">
+			import frontend from './build/frontend.js';
+
+			frontend();
+		</script>
+	</body>
 </html>

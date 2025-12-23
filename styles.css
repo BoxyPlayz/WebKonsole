@@ -1,16 +1,16 @@
 body {
-  background: black;
-  height: calc(100vh - 16px);
+	background: black;
+	height: calc(100vh - 16px);
 }
 
 .Konsole {
-  overflow-y: "auto";
-  white-space: "pre-wrap";
-  padding: "5px";
-  box-sizing: "border-box";
-  font-family: "Consolas";
+	overflow-y: 'auto';
+	white-space: 'pre-wrap';
+	padding: '5px';
+	box-sizing: 'border-box';
+	font-family: 'Consolas';
 }
 
 *:focus {
-  outline: none;
+	outline: none;
 }

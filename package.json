@@ -1,11 +1,18 @@
 {
-  "source": "src/Konsole.ts",
-  "main": "dist/konsole.js",
-  "devDependencies": {
-    "rolldown": "^1.0.0-beta.56",
-    "typescript": "^5.8.3"
-  },
-  "scripts": {
-    "build": "rolldown src/Konsole.js --file build/konsole.js"
-  }
+	"source": "src/Konsole.ts",
+	"main": "dist/konsole.js",
+	"devDependencies": {
+		"@boxyplayz/prettier-config": "^1.0.0",
+		"prettier": "^3.7.4",
+		"rolldown": "^1.0.0-beta.56",
+		"rolldown-plugin-dts": "^0.19.2",
+		"typescript": "^5.8.3"
+	},
+	"scripts": {
+		"build": "rolldown -c",
+		"prettier": "prettier . --write",
+        "dev": "rolldown --watch -c"
+	},
+	"prettier": "@boxyplayz/prettier-config",
+	"type": "module"
 }
